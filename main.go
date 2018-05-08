@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/BurntSushi/toml"
+	"net/http"
 )
 
 type cookie struct {
@@ -11,6 +12,7 @@ type cookie struct {
 	SSID    string
 	APISID  string
 	SAPISID string
+	CONSENT string
 	NID     string
 	JAR     string
 }
@@ -26,5 +28,29 @@ func main() {
 	fmt.Printf("SID: %s\nHSID: %s\nSSID: %s\nAPISID: %s\nSAPISID: %s\nNID: %s\nJAR: %s\n",
 		config.SID, config.HSID, config.SSID, config.APISID, config.SAPISID,
 		config.NID, config.JAR)
+	fmt.Println("Setup curl like fetch:")
+
+	req, err := http.NewRequest("GET", "https://www.google.be/maps/timeline?hl=nl&authuser=0&ei=oBDxWsj4Bov4vgTWgb3IDA%3A6&ved=1t%3A17706&pb=!1m2!1m1!1s2018-04-21", nil)
+	if err != nil {
+		// handle err
+	}
+	req.Header.Set("Authority", "www.google.be")
+	req.Header.Set("Cache-Control", "max-age=0")
+	req.Header.Set("Upgrade-Insecure-Requests", "1")
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Mobile Safari/537.36")
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+	req.Header.Set("X-Client-Data", "CJe2yQEIprbJAQjEtskBCKmdygEIqKPKAQ==")
+	req.Header.Set("Referer", "https://www.google.be/")
+	req.Header.Set("Accept-Encoding", "gzip")
+	req.Header.Set("Accept-Language", "en-US,en;q=0.9,nl;q=0.8")
+	req.Header.Set("Cookie", "SID="+config.SID+"; SSID="+config.SSID+"; APISID="+config.APISID+"; CONSENT="+config.CONSENT+"; NID="+config.NID+"; 1P_JAR="+config.JAR)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(resp)
+	}
+	defer resp.Body.Close()
 
 }
