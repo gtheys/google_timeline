@@ -41,7 +41,6 @@ func main() {
 	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
 	req.Header.Set("X-Client-Data", "CJe2yQEIprbJAQjEtskBCKmdygEIqKPKAQ==")
 	req.Header.Set("Referer", "https://www.google.be/")
-	req.Header.Set("Accept-Encoding", "gzip")
 	req.Header.Set("Accept-Language", "en-US,en;q=0.9,nl;q=0.8")
 	req.Header.Set("Cookie", "SID="+config.SID+"; HSID="+config.HSID+"; SSID="+config.SSID+"; APISID="+config.APISID+"; SAPISID="+config.SAPISID+"; CONSENT="+config.CONSENT+"; NID="+config.NID+"; 1P_JAR="+config.JAR)
 
