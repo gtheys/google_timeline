@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/BurntSushi/toml"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -51,5 +52,18 @@ func main() {
 		fmt.Println(resp)
 	}
 	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	errr := ioutil.WriteFile("output.kml", body, 0644)
+	if errr != nil {
+		fmt.Println(errr)
+	}
+
+	fmt.Println("Let's see what we got Will Roger:")
+	fmt.Println(string(body))
 
 }
