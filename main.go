@@ -30,7 +30,7 @@ func main() {
 		config.NID, config.JAR)
 	fmt.Println("Setup curl like fetch:")
 
-	req, err := http.NewRequest("GET", "https://www.google.be/maps/timeline?hl=nl&authuser=0&ei=oBDxWsj4Bov4vgTWgb3IDA%3A6&ved=1t%3A17706&pb=!1m2!1m1!1s2018-04-21", nil)
+	req, err := http.NewRequest("GET", "https://www.google.be/maps/timeline/kml?authuser=0&pb=!1m8!1m3!1i2018!2i3!3i21!2m3!1i2018!2i3!3i21", nil)
 	if err != nil {
 		// handle err
 	}
@@ -43,7 +43,7 @@ func main() {
 	req.Header.Set("Referer", "https://www.google.be/")
 	req.Header.Set("Accept-Encoding", "gzip")
 	req.Header.Set("Accept-Language", "en-US,en;q=0.9,nl;q=0.8")
-	req.Header.Set("Cookie", "SID="+config.SID+"; SSID="+config.SSID+"; APISID="+config.APISID+"; CONSENT="+config.CONSENT+"; NID="+config.NID+"; 1P_JAR="+config.JAR)
+	req.Header.Set("Cookie", "SID="+config.SID+"; HSID="+config.HSID+"; SSID="+config.SSID+"; APISID="+config.APISID+"; SAPISID="+config.SAPISID+"; CONSENT="+config.CONSENT+"; NID="+config.NID+"; 1P_JAR="+config.JAR)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
