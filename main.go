@@ -76,7 +76,7 @@ func main() {
 			fmt.Println(err)
 		}
 
-		errr := ioutil.WriteFile("output.kml", body, 0644)
+		errr := ioutil.WriteFile("output-2018-"+month+"-"+day+".kml", body, 0644)
 		if errr != nil {
 			fmt.Println(errr)
 		}
