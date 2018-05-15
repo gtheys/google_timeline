@@ -1,15 +1,17 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"github.com/BurntSushi/toml"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 )
 
-type cookie struct {
+type Config struct {
 	SID     string
 	HSID    string
 	SSID    string
@@ -20,11 +22,29 @@ type cookie struct {
 	JAR     string
 }
 
+// LoadConfig Title says it all :)
+func LoadConfig(configFile string) (*Config, error) {
+	if _, err := os.Stat(configFile); os.IsNotExist(err) {
+		return nil, errors.New("Config File doesn not exist")
+
+	} else if err != nil {
+		return nil, err
+	}
+
+	var config Config
+
+	if _, err := toml.DecodeFile(configFile, &config); err != nil {
+		return nil, err
+	}
+
+	return &config, nil
+
+}
+
 func main() {
-	var config cookie
-	if _, err := toml.DecodeFile("cookie.toml", &config); err != nil {
+	config, err := LoadConfig("config.toml")
+	if err != nil {
 		fmt.Println(err)
-		return
 	}
 
 	// For now I hardcode a data so I can feth while looping
