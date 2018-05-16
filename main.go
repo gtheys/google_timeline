@@ -61,6 +61,7 @@ func main() {
 
 	// For now I hardcode a data so I can feth while looping
 	start, err := time.Parse("2006-1-2", config.Dates.Startdate)
+	end, err := time.Parse("2006-1-2", config.Dates.Enddate)
 	if err != nil {
 		// handle err
 	}
@@ -69,7 +70,7 @@ func main() {
 
 	month := strconv.Itoa(int(m))
 
-	for date := start; date.Month() == start.Month(); date = date.AddDate(0, 0, 1) {
+	for date := start; date != end; date = date.AddDate(0, 0, 1) {
 		d := date.Day()
 		day := strconv.Itoa(int(d))
 
