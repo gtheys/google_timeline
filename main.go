@@ -11,7 +11,12 @@ import (
 	"time"
 )
 
-type Config struct {
+type tomlConfig struct {
+	Cookie cookie
+	Dates  dates
+}
+
+type cookie struct {
 	SID     string
 	HSID    string
 	SSID    string
@@ -22,8 +27,13 @@ type Config struct {
 	JAR     string
 }
 
+type dates struct {
+	Startdate string
+	Enddate   string
+}
+
 // LoadConfig Title says it all :)
-func LoadConfig(configFile string) (*Config, error) {
+func LoadConfig(configFile string) (*tomlConfig, error) {
 	if _, err := os.Stat(configFile); os.IsNotExist(err) {
 		return nil, errors.New("Config File doesn not exist")
 
@@ -31,7 +41,7 @@ func LoadConfig(configFile string) (*Config, error) {
 		return nil, err
 	}
 
-	var config Config
+	var config tomlConfig
 
 	if _, err := toml.DecodeFile(configFile, &config); err != nil {
 		return nil, err
@@ -47,8 +57,10 @@ func main() {
 		fmt.Println(err)
 	}
 
+	fmt.Printf("Startdate: %s\n", config.Dates.Startdate)
+
 	// For now I hardcode a data so I can feth while looping
-	start, err := time.Parse("2006-1-2", "2018-1-1")
+	start, err := time.Parse("2006-1-2", config.Dates.Startdate)
 	if err != nil {
 		// handle err
 	}
@@ -65,8 +77,8 @@ func main() {
 		fmt.Println("Month:" + month + "-- Day:" + day)
 		fmt.Println("Reading Cookie info:")
 		fmt.Printf("SID: %s\nHSID: %s\nSSID: %s\nAPISID: %s\nSAPISID: %s\nNID: %s\nJAR: %s\n",
-			config.SID, config.HSID, config.SSID, config.APISID, config.SAPISID,
-			config.NID, config.JAR)
+			config.Cookie.SID, config.Cookie.HSID, config.Cookie.SSID, config.Cookie.APISID, config.Cookie.SAPISID,
+			config.Cookie.NID, config.Cookie.JAR)
 		fmt.Println("Setup curl like fetch:")
 
 		req, err := http.NewRequest("GET", "https://www.google.be/maps/timeline/kml?authuser=0&pb=!1m8!1m3!1i2018!2i"+month+"!3i"+day+"!2m3!1i2018!2i3!3i21", nil)
@@ -81,7 +93,7 @@ func main() {
 		req.Header.Set("X-Client-Data", "CJe2yQEIprbJAQjEtskBCKmdygEIqKPKAQ==")
 		req.Header.Set("Referer", "https://www.google.be/")
 		req.Header.Set("Accept-Language", "en-US,en;q=0.9,nl;q=0.8")
-		req.Header.Set("Cookie", "SID="+config.SID+"; HSID="+config.HSID+"; SSID="+config.SSID+"; APISID="+config.APISID+"; SAPISID="+config.SAPISID+"; CONSENT="+config.CONSENT+"; NID="+config.NID+"; 1P_JAR="+config.JAR)
+		req.Header.Set("Cookie", "SID="+config.Cookie.SID+"; HSID="+config.Cookie.HSID+"; SSID="+config.Cookie.SSID+"; APISID="+config.Cookie.APISID+"; SAPISID="+config.Cookie.SAPISID+"; CONSENT="+config.Cookie.CONSENT+"; NID="+config.Cookie.NID+"; 1P_JAR="+config.Cookie.JAR)
 
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
