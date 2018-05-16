@@ -63,7 +63,7 @@ func main() {
 	start, err := time.Parse("2006-1-2", config.Dates.Startdate)
 	end, err := time.Parse("2006-1-2", config.Dates.Enddate)
 	if err != nil {
-		// handle err
+		fmt.Println(err)
 	}
 
 	m := start.Month() - 1 // Because javascript
