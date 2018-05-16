@@ -20,11 +20,11 @@ JAR = "JARVAlue"
 
 func TestLoadConfig(t *testing.T) {
 	// write config to current folder (0664 denotes the permissions in octal notation)
-	ioutil.WriteFile("config.toml", testConfig, os.FileMode(int(0664)))
+	ioutil.WriteFile("test_config.toml", testConfig, os.FileMode(int(0664)))
 	// clean up config.json after tests are completed
-	//defer os.Remove("config.toml")
+	defer os.Remove("test_config.toml")
 
-	config, err := LoadConfig("config.toml")
+	config, err := LoadConfig("test_config.toml")
 	if err != nil {
 		t.Error(err)
 	}
