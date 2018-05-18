@@ -30,10 +30,3 @@ func TestLoadConfig(t *testing.T) {
 	}
 	t.Logf("config successfully created: \n %v", config)
 }
-
-func testFetchKML(t *testing.T) {
-	// Test if request returns 200
-
-	// Test if request return kml File
-
-}
