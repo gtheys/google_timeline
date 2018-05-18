@@ -107,19 +107,21 @@ func main() {
 	}
 
 	m := start.Month() - 1 // Because javascript
+	y := start.Year()      // Because javascript
 
 	month := strconv.Itoa(int(m))
+	year := strconv.Itoa(int(y))
 
 	for date := start; date != end; date = date.AddDate(0, 0, 1) {
 		d := date.Day()
 		day := strconv.Itoa(int(d))
 
-		body, err := FetchKML(day, month, "2018", config)
+		body, err := FetchKML(day, month, year, config)
 		if err != nil {
 			fmt.Println(err)
 		}
 
-		errr := ioutil.WriteFile("output-2018-"+month+"-"+day+".kml", body, 0644)
+		errr := ioutil.WriteFile("output-"+year+"-"+month+"-"+day+".kml", body, 0644)
 		if errr != nil {
 			fmt.Println(errr)
 		}
